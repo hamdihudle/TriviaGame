@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <title>Trivia Game</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-light bg-light row jumbotron">
+  <a class="navbar-brand mx-auto display-4">Are you smarter then a 5th Grader?</a>
+  <form class="form-inline">
+    <button class="btn btn-outline-success my-2 my-sm-0">Start</button>
+  </form>
+</nav>
+<div class="container">
+    <div id="time-left"></div>
+
+    <div>
+      
+      <div class="card">
+  <div class="card-body" id="question">
+   <button type="button" class="btn btn-primary">Primary</button>
+  </div>
+</div>
+
+    </div>
+
+<br>
+
+
+    <div>
+      <div class="card">
+  <div class="card-body ml-5" id="options">
+    
+  </div>
+</div>
+
+    </div>
+</div>
+   
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+      
+      var questions = [
+      {"question":'what continent is India located? ?',
+       "guesses":['Asia','Africa','North America', 'South America'],
+       "answer":'Asia'}, 
+       {"question":'What continent is Somalia located? ?',
+       "guesses":['Asia','Africa','North America', 'South America','Europe'],
+       "answer":'Africa'},
+       {"question":'What continent is Brazil located?',
+       "guesses":['Asia','Africa','North America', 'South America','Europe'],
+       "answer":'South America'},
+       {"question":'What continent is Norway located?',
+       "guesses":['Asia','Africa','North America', 'South America','Europe'],
+       "answer":'Europe'}
+      ];
+      var currentquestion = "";
+      var currentQ = 0;
+      var corrects = 0;
+      var incorrects = 0;
+      var time = 10;
+      var masterkey = "";
+      var intervaliId;
+      start();
+      function start(){
+       intervaliId = setInterval(decrement, 900);
+      }
+
+        $('#options').append("About 10 Seconds Left!");
+      function decrement(){
+        time--;
+        $('#time-left').html("<h2>" + time + "</h2>");
+        if (time === 0){
+          incorrects++;
+          currentQ++;
+         
+          time=10;
+      
+          endgame();
+          updateQuestion();
+        
+        }
+        
+      }
+      function endgame(){
+ if (incorrects + corrects === questions.length) {
+            $(".container").html("GAME OVER, YOUR SCORE IS " + corrects);
+            time = 999999999999;
+        } 
+      }
+function updateQuestion(){
+  masterkey = questions[currentQ].answer
+  currentquestion = questions[currentQ].question
+ $("#options").empty();
+  $("#question").html(currentquestion);
+
+    for (i=0; i<questions[currentQ].guesses.length; i++){
+      var btn = $('<button>');
+      btn.attr("data-g", questions[currentQ].guesses[i]);
+      btn.text(questions[currentQ].guesses[i]);
+      btn.click(checker);
+      $("#options").append(btn);
+      time = 10;
+    }
+      };
+      function checker(){
+       
+      
+        if ($(this).attr("data-g") === questions[currentQ].answer) {
+            currentQ++;
+            corrects++;
+            alert("yes, that is correct");
+            setTimeout(fiveSeconds,);
+            clearInterval(intervaliId);
+            time = 10;
+            endgame();
+            updateQuestion();
+            
+        } 
+        else {
+          incorrects++;
+          currentQ++;
+          alert ("That is incorrect, the correct answer is:  " + '"' + masterkey + '"');
+          setTimeout(fiveSeconds,);
+          time = 10;
+          endgame();
+          updateQuestion();
+          
+        }
+}
+updateQuestion();
+    
+      
+    </script>
+
+  </body>
+
+</html>
